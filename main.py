@@ -5,6 +5,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram import types
 import sqlite3 as sq
 import asyncio
+import re
 import aioschedule
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.utils.exceptions import (MessageToEditNotFound, MessageCantBeEdited, MessageCantBeDeleted,
@@ -33,21 +34,7 @@ dayMenu = ReplyKeyboardMarkup(resize_keyboard=True).add(btnEveryday, btnSunday, 
 
 
 def clear_text(a):
-    a = str(a)
-    a = a.split("'")
-    a = ''.join(a)
-    a = a.split(")")
-    a = ''.join(a)
-    a = a.split("(")
-    a = ''.join(a)
-    a = a.split(",")
-    a = '|'.join(a)
-    a = a.split("]")
-    a = ''.join(a)
-    a = a.split("[")
-    a = ''.join(a)
-    return a
-
+    return re.sub(r"['\[\]()\,]", "", str(a))
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
